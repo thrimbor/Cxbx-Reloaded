@@ -292,6 +292,7 @@ file (GLOB CXBXR_SOURCE_EMU
  "${CXBXR_ROOT_DIR}/src/core/hle/XACTENG/XactEng.cpp"
  "${CXBXR_ROOT_DIR}/src/core/hle/XAPI/Xapi.cpp"
  "${CXBXR_ROOT_DIR}/src/core/hle/XGRAPHIC/XGraphic.cpp"
+ "${CXBXR_ROOT_DIR}/src/core/hle/XONLINE/XOnline.cpp"
  "${CXBXR_ROOT_DIR}/src/core/kernel/exports/EmuKrnl.cpp"
  "${CXBXR_ROOT_DIR}/src/core/kernel/exports/EmuKrnlAv.cpp"
  "${CXBXR_ROOT_DIR}/src/core/kernel/exports/EmuKrnlDbg.cpp"

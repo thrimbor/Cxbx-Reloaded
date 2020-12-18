@@ -30,6 +30,7 @@
 #include "core\kernel\support\Emu.h"
 #include "core\hle\D3D8\Direct3D9/Direct3D9.h"
 #include "core\hle\DSOUND\DirectSound\DirectSound.hpp"
+#include "core\hle\XONLINE\XOnline.h"
 #include "Patches.hpp"
 #include "Intercept.hpp"
 
@@ -362,6 +363,11 @@ std::map<const std::string, const xbox_patch_t> g_PatchTable = {
 	PATCH_ENTRY("XSetProcessQuantumLength", xbox::EMUPATCH(XSetProcessQuantumLength), PATCH_ALWAYS),
 	PATCH_ENTRY("timeKillEvent", xbox::EMUPATCH(timeKillEvent), PATCH_ALWAYS),
 	PATCH_ENTRY("timeSetEvent", xbox::EMUPATCH(timeSetEvent), PATCH_ALWAYS),
+
+	// XONLINE
+	PATCH_ENTRY("XOnlineMatchSearch", xbox::EMUPATCH(XOnlineMatchSearch), PATCH_ALWAYS),
+	PATCH_ENTRY("XOnlineMatchSearchResultsLen", xbox::EMUPATCH(XOnlineMatchSearchResultsLen), PATCH_ALWAYS),
+	PATCH_ENTRY("XOnlineMatchSessionCreate", xbox::EMUPATCH(XOnlineMatchSessionCreate), PATCH_ALWAYS),
 };
 
 std::unordered_map<std::string, subhook::Hook> g_FunctionHooks;
@@ -442,6 +448,7 @@ void EmuInstallPatches()
 	}
 
 	LookupTrampolines();
+	LookupXonlineTrampolines();
 }
 
 void* GetPatchedFunctionTrampoline(const std::string functionName)

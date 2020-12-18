@@ -22,12 +22,38 @@
 // *  All rights reserved
 // *
 // ******************************************************************
-#if 0 // XOnline.h isn't used, but below is still useful documentation.
+#if 1 // XOnline.h isn't used, but below is still useful documentation.
 
 #include "core\kernel\support\Emu.h"
 #include "core\hle\XAPI\Xapi.h" // For EMUPATCH
 
+extern void LookupXonlineTrampolines();
+
 namespace xbox {
+
+typedef struct _XONLINE_ATTRIBUTE {
+    dword_xt dwAttributeID;
+    bool_xt fChanged;
+    union {
+        struct {
+            ulonglong_xt qwValue;
+        } integer;
+        struct {
+            wchar_xt *lpValue;
+        } string;
+        struct {
+            void_xt *pvValue;
+            dword_xt dwLength;
+        } blob;
+    };
+} XONLINE_ATTRIBUTE, *PXONLINE_ATTRIBUTE;
+
+typedef HANDLE XONLINETASK_HANDLE, *PXONLINETASK_HANDLE;
+
+typedef struct _XONLINE_ATTRIBUTE_SPEC {
+    dword_xt dwType;
+    dword_xt dwLength;
+} XONLINE_ATTRIBUTE_SPEC, *PXONLINE_ATTRIBUTE_SPEC;
 
 // ******************************************************************
 // * patch: WSAStartup
@@ -70,6 +96,36 @@ xbox::hresult_xt WINAPI EMUPATCH(XOnlineLogon)
     dword_xt	dwServices,
     HANDLE	hEvent,
     HANDLE	pHandle
+);
+
+xbox::hresult_xt WINAPI EMUPATCH(XOnlineMatchSearch)
+(
+    dword_xt dwProcedureIndex,
+    dword_xt dwNumResults,
+    dword_xt dwNumAttributes,
+    const XONLINE_ATTRIBUTE *pAttributes,
+    dword_xt dwResultsLen,
+    HANDLE hWorkEvent,
+    PXONLINETASK_HANDLE phTask
+);
+
+xbox::hresult_xt WINAPI EMUPATCH(XOnlineMatchSearchResultsLen)
+(
+    dword_xt dwNumResults,
+    dword_xt dwNumSessionAttributes,
+    const XONLINE_ATTRIBUTE_SPEC* pSessionAttributeSpec
+);
+
+xbox::hresult_xt WINAPI EMUPATCH(XOnlineMatchSessionCreate)
+(
+    dword_xt dwPublicCurrent,
+    dword_xt dwPublicAvailable,
+    dword_xt dwPrivateCurrent,
+    dword_xt dwPrivateAvailable,
+    dword_xt dwNumAttributes,
+    PXONLINE_ATTRIBUTE pAttributes,
+    HANDLE hWorkEvent,
+    PXONLINETASK_HANDLE phTask
 );
 
 SOCKET WINAPI EMUPATCH(socket)
