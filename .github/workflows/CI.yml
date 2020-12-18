@@ -66,9 +66,7 @@ jobs:
 
   release:
     if: |
-      github.event.action != 'pull_request' &&
-      github.ref == 'refs/heads/master' &&
-      github.repository == 'Cxbx-Reloaded/Cxbx-Reloaded'
+      github.event.action != 'pull_request'
     needs: build-windows
     env:
       artifact_1: CxbxReloaded-Release-VS2019
