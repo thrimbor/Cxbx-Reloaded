@@ -112,9 +112,10 @@ xbox::hresult_xt WINAPI xbox::EMUPATCH(XOnlineMatchSearchResultsLen)
     for (dword_xt i = 0; i < dwNumSessionAttributes; i++) {
         s << "[" << i << "] ID: 0x" << pSessionAttributeSpec[i].dwType << " ";
         if (pSessionAttributeSpec[i].dwType & 0x100000)
-            s << "Type: string" << std::endl;
+            s << "Type: string";
         else
-            s << "Type: int" << std::endl;
+            s << "Type: int";
+        s << " Length: " << std::dec << pSessionAttributeSpec[i].dwLength << std::endl;
     }
 
     EmuLog(LOG_LEVEL::DEBUG, s.str().c_str());
