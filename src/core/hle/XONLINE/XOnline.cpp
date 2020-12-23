@@ -78,6 +78,14 @@ xbox::hresult_xt WINAPI xbox::EMUPATCH(XOnlineMatchSearch)
             s << "Type: null" << std::endl;
         else if (pAttributes[i].dwAttributeID & 0x100000)
             s << "Type: string Content: " << utf16_to_ascii(reinterpret_cast<wchar_t*>(pAttributes[i].string.lpValue)) << std::endl;
+        else if (pAttributes[i].dwAttributeID & 0x200000) {
+            s << "Type: blob Length: " << std::dec << pAttributes[i].blob.dwLength << std::hex << " Content:";
+            for (xbox::dword_xt j = 0; j < pAttributes[i].blob.dwLength; j++) {
+                std::stringstream s2;
+                s2 << " " << std::setw(2) << std::hex << std::setfill('0') << static_cast<unsigned int>(reinterpret_cast<unsigned char*>(pAttributes[i].blob.pvValue)[j]);
+            }
+            s << std::endl;
+        }
         else
             s << "Type: int Content: " << pAttributes[i].integer.qwValue << std::endl;
     }
@@ -113,6 +121,8 @@ xbox::hresult_xt WINAPI xbox::EMUPATCH(XOnlineMatchSearchResultsLen)
         s << "[" << i << "] ID: 0x" << pSessionAttributeSpec[i].dwType << " ";
         if (pSessionAttributeSpec[i].dwType & 0x100000)
             s << "Type: string";
+        else if (pSessionAttributeSpec[i].dwType & 0x200000)
+            s << "Type: blob";
         else
             s << "Type: int";
         s << " Length: " << std::dec << pSessionAttributeSpec[i].dwLength << std::endl;
@@ -160,6 +170,14 @@ xbox::hresult_xt WINAPI xbox::EMUPATCH(XOnlineMatchSessionCreate)
         s << "[" << i << "] ID: 0x" << pAttributes[i].dwAttributeID << " ";
         if (pAttributes[i].dwAttributeID & 0x100000)
             s << "Type: string Content: " << utf16_to_ascii(reinterpret_cast<wchar_t*>(pAttributes[i].string.lpValue)) << std::endl;
+        else if (pAttributes[i].dwAttributeID & 0x200000) {
+            s << "Type: blob Length: " << std::dec << pAttributes[i].blob.dwLength << std::hex << " Content:";
+            for (xbox::dword_xt j = 0; j < pAttributes[i].blob.dwLength; j++) {
+                std::stringstream s2;
+                s2 << " " << std::setw(2) << std::hex << std::setfill('0') << static_cast<unsigned int>(reinterpret_cast<unsigned char*>(pAttributes[i].blob.pvValue)[j]);
+            }
+            s << std::endl;
+        }
         else
             s << "Type: int Content: " << pAttributes[i].integer.qwValue << std::endl;
     }
